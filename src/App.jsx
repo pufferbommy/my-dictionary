@@ -4,9 +4,7 @@ import { useState } from 'react'
 import Error from './components/Error'
 import Results from './components/Results'
 import SearchInput from './components/SearchInput'
-
-// Images
-import searchSvg from './images/search.svg'
+import WaitToSearch from './components/WaitToSearch'
 
 const App = () => {
   const [searchValue, setSearchValue] = useState('')
@@ -16,14 +14,15 @@ const App = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!searchValue) return
+    const trimmedSearchValue = searchValue.trim()
+    if (!trimmedSearchValue) return
 
     setResults([])
     setError(null)
     setIsLoading(true)
 
     try {
-      const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${searchValue}`)
+      const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${trimmedSearchValue}`)
       const data = await res.json()
 
       if (data.title === 'No Definitions Found') throw data
@@ -46,14 +45,7 @@ const App = () => {
             <SearchInput searchValue={searchValue} setSearchValue={setSearchValue} />
           </form>
           <Error error={error} />
-          {results.length === 0 && !error && !isLoading && (
-            <div className="flex flex-col items-center">
-              <div className="h-[16rem] overflow-hidden mt-20">
-                <img className="invert w-80" src={searchSvg} alt="search" />
-              </div>
-              <h2 className="text-4xl max-w-[500px] text-center text-white leading-normal mt-4">Search some thing to find the word above here</h2>
-            </div>
-          )}
+          {results.length === 0 && !error && !isLoading && <WaitToSearch />}
           <Results isLoading={isLoading} results={results} />
         </div>
       </div>

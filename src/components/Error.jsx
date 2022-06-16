@@ -1,3 +1,4 @@
+// Images
 import notFound from '../images/not-found.svg'
 
 const Error = ({ error }) => {

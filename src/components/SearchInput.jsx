@@ -1,3 +1,4 @@
+// Icons
 import { CgSearch } from 'react-icons/cg'
 
 const SearchInput = ({ searchValue, setSearchValue }) => {
